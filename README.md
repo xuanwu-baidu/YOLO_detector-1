@@ -4,7 +4,7 @@
 
 ### 1.Introduction
 
-This is tensorflow implementation of the YOLO:Real-Time Object Detection
+This is tensorflow implementation of the YOLO:Real-Time Object Detection. This work is originally produced by Github user Jinyoung Choi.
 
 It can only do predictions using pretrained YOLO_small & YOLO_tiny network for now.
 
