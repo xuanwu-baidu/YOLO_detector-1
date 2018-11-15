@@ -41,7 +41,9 @@ class YOLO_TF:
 			print("Accuracy:", self.detected/self.overall_pics)
 
 	def argv_parser(self,argvs):
+		pdb.set_trace()
 		for i in range(1,len(argvs),2):
+			print(i)
 			if argvs[i] == '-fromfile' : self.fromfile = argvs[i+1]
 			if argvs[i] == '-fromfolder' : 
 				self.fromfolder = argvs[i+1]
