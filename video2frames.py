@@ -1,13 +1,13 @@
-import cv2
+import os
 
-video_capture = cv.VideoCapture("sample.mp4")
+# get a video from video_path and cut all frames and save them under frames_folder_path
+def video2frames(video_path, frames_folder_path):
+    # 构建命令
+    command = 'ffmpeg -i '
+    frames_dir_to_save = os.path.join(frames_folder_path,'out-%03d.jpg')
 
-fps = video_capture.get(cv2.CAP_PROP_FPS)
-frames = video_capture.get(cv2.CAP_PROP_FRAME_COUNT)
-
-print("fps=",fps,"frames=",frames)
-
-for i in range(int(frames)):
-    ret,frame = video_capture.read()
-    cv2.imwrite("test/videoframe/test4(%d).jpg"%i,frame)
-    print(i)
+    # 执行命令
+    command += video_path + ' ' + frames_dir_to_save
+    os.system(command)
+    
+video2frames('video.mp4','input-frames')
