@@ -44,7 +44,6 @@ class YOLO_TF:
         
     def argv_parser(self,argvs):
         for i in range(1,len(argvs),2):
-            print(i)
             if argvs[i] == '-fromfile' : self.fromfile = argvs[i+1]
             if argvs[i] == '-fromfolder' : self.fromfolder = argvs[i+1]
             if argvs[i] == '-fromvideo' : self.fromvideo = argvs[i+1]
@@ -163,12 +162,12 @@ class YOLO_TF:
 
             self.result = self.interpret_output(net_output[0])
 
-            self.show_results(self.result)
+            resulted_frame = self.show_results(self.result)
 
             strtime = str(time.time()-s)
             if self.disp_console : print('Elapsed time : ' + strtime + ' secs' + '\n')
 
-        return None
+        return resulted_frame
 
     # comput iou value
     def iou(self,box1,box2):
@@ -249,7 +248,7 @@ class YOLO_TF:
                                          '], Confidence = ' + str(results[i][5]))
                 
             # draw bbox
-            if self.filewrite_img or self.imshow:
+            if self.filewrite_img or self.imshow or self.fromstream:
                 cv2.rectangle(img_cp,(x-w,y-h),(x+w,y+h),(0,255,0),2)
                 cv2.rectangle(img_cp,(x-w,y-h-20),(x+w,y-h),(125,125,125),-1)
                 
@@ -284,6 +283,7 @@ class YOLO_TF:
             if self.disp_console : print('    txt file writed : ' + self.tofile_txt)
             ftxt.close()
 
+        return img_cp
 
     def training(self): #TODO add training function!
         return None
@@ -305,7 +305,20 @@ class YOLO_TF:
             pass
         
         if self.fromstream is not None:
-            pass
+            cap = cv2.VideoCapture(0)
+
+            while(True):
+                # get a frame
+                ret, frame = cap.read()
+                resulted_frame = self.detect(frame)
+
+                # show a frame
+                cv2.imshow("capture", resulted_frame)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+
+            cap.release()
+            cv2.destroyAllWindows()
             
         return None
             
